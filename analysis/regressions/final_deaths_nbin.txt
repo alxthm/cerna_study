@@ -1,0 +1,29 @@
+	(1)	(2)	(3)	(4)	(5)	(6)
+VARIABLES	TotalDeaths_match_only	TotalDeaths_match_only	TotalDeaths_match_only	TotalDeaths_match_only	TotalDeaths_match_only	TotalDeaths_match_only
+						
+log_gdp_pc	-1.357*	-2.067***	-1.414*	-1.551**	-1.048	-0.324
+	(0.743)	(0.788)	(0.857)	(0.791)	(0.909)	(0.415)
+log_pop	0.845*	1.159**	0.966*	0.921*	0.612	0.119
+	(0.449)	(0.456)	(0.532)	(0.487)	(0.546)	(0.258)
+pat_stock85_both_hvi_t1	-2.262*	-1.762	-2.428**			
+	(1.263)	(1.313)	(1.162)			
+exp_stock_deaths_t1	-0.587***	-0.531***		-0.582***	-0.599***	
+	(0.159)	(0.182)		(0.169)	(0.158)	
+pop3464_d5	0.110***		0.0879**	0.105**	0.103**	
+	(0.0420)		(0.0372)	(0.0424)	(0.0450)	
+pop96_d5	0.397**		0.114	0.416**	0.429**	
+	(0.174)		(0.149)	(0.179)	(0.175)	
+evt_count3464		1.289***				
+		(0.299)				
+evt_count96		1.346***				
+		(0.226)				
+exp_stock_count_v64_t1			0.134			
+			(0.105)			
+pat_stock_all_hvi_t1				-0.000807		
+				(0.00141)		
+pat_stock85_both_t1					-0.324	
+					(0.258)	
+						
+Observations	400	400	400	400	400	416
+Robust standard errors in parentheses						
+*** p<0.01, ** p<0.05, * p<0.1						

@@ -1,0 +1,7 @@
+# TCE-DAT spatially explicit data, available at https://doi.org/10.5880/pik.2017.008
+data/raw/TCE-DAT_single_events_historical
+
+# project files
+.Rproj.user
+.Rhistory
+**/.DS_Store
