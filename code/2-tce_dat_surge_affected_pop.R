@@ -175,10 +175,4 @@ for (file in files) {
 }
 
 write_csv(df, sprintf("%s/data/processed/tce_dat_cl_distances_r_output.csv", project_root))
-
-print(
-  sprintf(
-    "All done! Computed exposure indicators for %d country-events",
-    nrow(df),
-  )
-)
+print(sprintf("All done! Computed exposure indicators for %d country-events", nrow(df)))

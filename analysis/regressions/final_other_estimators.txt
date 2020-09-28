@@ -1,17 +1,17 @@
 	(1)	(2)
 VARIABLES	TotalDeaths_match_only	TotalDamages_match_only
 		
-log_gdp_pc	-1.011	0.904***
+log_gdp_pc	-1.012	0.904***
 	(0.924)	(0.282)
-log_pop	0.699	0.200
-	(0.493)	(0.168)
-pat_stock85_both_hvi_t1	-2.245	-1.931**
-	(2.854)	(0.842)
+log_pop	0.700	0.200
+	(0.494)	(0.168)
+pat_stock85_both_hvi_t1	-2.246	-1.931**
+	(2.855)	(0.842)
 exp_stock_deaths_t1	-0.435**	-0.0557
 	(0.209)	(0.102)
 pop3464_d5	0.0778**	
-	(0.0332)	
-pop96_d5	-0.0474	
+	(0.0333)	
+pop96_d5	-0.0476	
 	(0.154)	
 assets3464		0.0921
 		(0.0721)

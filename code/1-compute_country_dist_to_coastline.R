@@ -14,7 +14,19 @@ library(countrycode)
 library(here)
 
 project_root = here()
-countries = c("AUS", "CAN", "CHN", "DOM", "HND", "JPN", "KOR", "MEX", "NIC", "PHL", "SLV", "USA", "VNM")
+#countries = c("AUS", "CAN", "CHN", "DOM", "HND", "JPN", "KOR", "MEX", "NIC", "PHL", "SLV", "USA", "VNM")
+# All the countries with at least one event in TCE-DAT
+countries = c('ABW', 'AIA', 'AND', 'ANT', 'ASM', 'ATG', 'AUS', 'BGD', 'BHS',
+              'BLZ', 'BRA', 'BRB', 'BRN', 'CAN', 'CHN', 'COL', 'COM', 'CPV',
+              'CRI', 'CUB', 'DMA', 'DOM', 'DZA', 'ESP', 'FJI', 'FRA', 'FRO',
+              'GBR', 'GIN', 'GLP', 'GNB', 'GRD', 'GTM', 'HKG', 'HND', 'HTI',
+              'IDN', 'IMN', 'IND', 'IRL', 'IRN', 'ISL', 'JAM', 'JPN', 'KHM',
+              'KNA', 'KOR', 'LAO', 'LCA', 'LKA', 'MAR', 'MDG', 'MEX', 'MMR',
+              'MOZ', 'MSR', 'MTQ', 'MUS', 'MWI', 'MYS', 'MYT', 'NCL', 'NIC',
+              'NOR', 'NZL', 'OMN', 'PAK', 'PAN', 'PHL', 'PNG', 'PRI', 'PRK',
+              'PRT', 'REU', 'RUS', 'SAU', 'SGP', 'SLB', 'SLV', 'SOM', 'SPM',
+              'TCA', 'THA', 'TLS', 'TON', 'TTO', 'TWN', 'TZA', 'USA', 'VCT',
+              'VEN', 'VIR', 'VNM', 'VUT', 'WSM', 'YEM', 'ZAF', 'ZWE')
 res = 0.1  # lat/lon °
 
 log_msg = function(s) {
@@ -27,11 +39,22 @@ for (iso in countries) {
   else
     country = countrycode(iso, origin="iso3c", destination="country.name")
   
+  if (is.na(country)) {
+    print(country)
+    log_msg(sprintf("Country with ISO code %s not found, skipping", iso))
+    next
+  }
+  
   log_msg(country)
   
   # ---- 
   # Create point grid and load coastline
-  country_coastline = ne_countries(scale = 10, country = country, returnclass = "sf")
+  country_coastline = tryCatch(ne_countries(scale = 10, country = country, returnclass = "sf"), error=function(e) NA)
+  if (is.na(country_coastline)) {
+    log_msg(sprintf("Borders for country %s not found, skipping", country))
+    next
+  }
+    
   # slightly higher resolution to avoid problems after when rasterizing
   # also, use full extent, not just the points inside of the country
   grid = st_make_grid(st_as_sfc(st_bbox(country_coastline)), cellsize = res * 0.9, what = "centers")
