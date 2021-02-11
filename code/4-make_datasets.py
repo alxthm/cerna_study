@@ -27,6 +27,8 @@ EXPOSURE_DATASET = 'TCE-DAT_historic-exposure_1950-2015_cl_distances.csv'
 STORM_DATASET = 'emdat_tcedat_merged_all_storm_types.xlsx'
 # Final dataset with storm data (exposure+impact) and patent data
 FINAL_DATASET = 'final_storm_patent_data.xlsx'
+# Dataset with all matches between tcedat/ibtracs events and emdat disasters
+ID_MATCH_DATASET = 'emdat_tcedat_id_match.xlsx'
 
 
 # Main data processing functions
@@ -108,12 +110,16 @@ def combine_exposure_emdat():
     match = df.apply(lambda x: x.TC_name.casefold() in x.EventName.casefold(), axis=1)
     df_merged_inner = df[match]
 
+    # Save all EMDAT disaster / ibtracs event matches, before removing duplicates
+    df_match_ids = df_merged_inner[['ISO', 'year', 'EventName', 'DisNo', 'TC_name', 'IBTrACS_ID']]
+    df_match_ids.to_excel(project_dir.joinpath(f'data/processed/{ID_MATCH_DATASET}'))
+
     # Handle the duplicates:
     # Multiple TCE-DAT cyclones considered as a single event in EM-DAT (same DisNo), so we add the indicators 
     # (pop/assets exposed) together.
     # 
     # The following command displays the duplicates :
-    # df_merged_inner.loc[df_merged_inner.DisNo.duplicated(keep=False), ['ISO', 'year', 'EventName', 'DisNo', 'TC_name', '34kn_pop']]
+    # df_merged_inner.loc[df_merged_inner.DisNo.duplicated(keep=False), ['ISO', 'year', 'EventName', 'DisNo', 'TC_name', 'IBTrACS_ID']]
     pd.set_option('mode.chained_assignment',None) # Ignore the warning as it works in our case
     is_dup = df_merged_inner.DisNo.duplicated(keep=False)
     df_merged_inner.loc[is_dup, exposure_names] = df_merged_inner.loc[is_dup, ['DisNo']+exposure_names].copy().groupby('DisNo').transform('sum')
@@ -135,7 +141,9 @@ def combine_exposure_emdat():
     # Save the merged data
     df_merged.to_excel(project_dir.joinpath(f'data/processed/{STORM_DATASET}'), index=False)
 
-    print(f'Data merged. Out of {len(df_tce[df_tce.start_date.dt.year>=1980])} TCE-DAT storms and {len(df_emdat[df_emdat.year<=2015])} EM-DAT disasters, we were able to match {len(df_merged_inner)} disasters.')
+    print(f'Data merged. Out of {len(df_tce[df_tce.start_date.dt.year>=1980])} TCE-DAT storms and {len(df_emdat[df_emdat.year<=2015])} EM-DAT disasters, we were able to match :')
+    print(f'{len(df_match_ids)} ibtracs/tcedat events with a EMDAT disaster')
+    print(f'{len(df_merged_inner)} disasters (after regrouping events that appear in the same disaster)')
 
 
 def match_with_patstat():
